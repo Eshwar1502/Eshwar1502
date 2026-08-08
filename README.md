@@ -22,6 +22,7 @@
 - 💼 Working on AI-integrated data pipelines and cloud-based ML systems (GCP / Vertex AI)
 - 🔬 Interested in applied ML, generative models, and NLP
 - 🎯 Focused on building toward multimodal AI — combining vision and language for real-world applications
+- 🕶️ Building in stealth — founder and developer
 - 🌱 Currently exploring agentic AI workflows and LLM tooling
 
 ---

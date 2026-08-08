@@ -69,7 +69,7 @@ than the cursor block drawn at the same position, so it never uncovers the next 
 README SVGs as images and drops `clip-path` on `<text>` in that mode while still running the SMIL
 opacity animations — so anything relying on a clip to stay hidden gets painted. The five role
 phrases share one baseline, and on Safari that showed up as all five stacked into an unreadable
-blur. The five role phrases share one baseline, so they now carry three independent guards, and the
+blur. The role phrases share one baseline, so they now carry three independent guards, and the
 element renders correctly if *any one* of them survives:
 
 1. the clip — character-by-character typing,
@@ -164,8 +164,8 @@ half the opacity of dark mode to look equally subtle.
 | ASCII line-by-line typing | one `clipPath` per line + per-line `opacity` fallback | 16s |
 | ASCII gradient shift | animated `stop-color` on three stops + `gradientTransform` translate | 12s / 7s |
 | ASCII float | `animateTransform` translate with `keySplines` easing | 7s |
-| Role typing | discrete clip `width` per character (`n×12 + 9` pad) + per-phrase `opacity` window | 20s (5 × 4s) |
-| Typing cursor | discrete `x` animation on the same keyTimes + 1s blink | 20s / 1s |
+| Role typing | discrete clip `width` per character (`n×12 + 9` pad) + per-phrase `opacity` window | 24s (6 × 4s) |
+| Typing cursor | discrete `x` animation on the same keyTimes + 1s blink | 24s / 1s |
 | Sequential reveal | `opacity` + translate with `fill="freeze"`, staggered `begin` | once |
 | Background blobs | three `radialGradient` ellipses on translate loops | 18/22/26s |
 | Particles | 18 circles, `cy` drift + `opacity` pulse, seeded `random(11)` | 9–20s |
@@ -185,7 +185,8 @@ All of this lives in the constants block at the top of `gen.py`:
 
 ```python
 NAME   = "Eshwar"
-ROLES  = [...]   # 5 phrases in the typing loop — keep under ~34 chars each
+ROLES  = [...]   # 6 phrases in the typing loop — keep under ~34 chars each;
+                 # the loop length is derived (4s each), so adding one is safe
 INFO   = [...]   # (icon, label, value) — icons: pin, cap, target, globe, mail
 SKILLS = [...]   # pills; the packer keeps 2 rows, extras past that are dropped
 socials = [...]  # (icon key, url) — icon keys: github, linkedin, x, globe

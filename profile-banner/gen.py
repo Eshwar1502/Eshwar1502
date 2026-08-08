@@ -38,6 +38,7 @@ ASCII = [
 
 ROLES = [
     "AI/ML Engineer",
+    "Stealth Founder & Developer",
     "Applied ML & NLP",
     "Generative AI Builder",
     "Multimodal AI Explorer",
