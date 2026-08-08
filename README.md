@@ -1,3 +1,11 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="profile-banner/assets/dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="profile-banner/assets/light.svg">
+    <img alt="Eshwar — AI/ML Engineer" src="profile-banner/assets/dark.svg" width="100%">
+  </picture>
+</p>
+
 <h1 align="center">Hi, I'm Eshwar 👋</h1>
 <h3 align="center">AI/ML Engineer</h3>
 
