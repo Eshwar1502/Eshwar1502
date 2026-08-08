@@ -105,6 +105,17 @@ def main():
     ap.add_argument("--gamma", type=float, default=1.0)
     ap.add_argument("--clip", default="2,98", help="low,high percentile for the contrast stretch")
     ap.add_argument("--preview", help="also write the cropped/rotated greyscale here as a PNG")
+    ap.add_argument("--ramp", default=RAMP, help="dense->sparse glyph ramp")
+    ap.add_argument("--local", type=int, default=0,
+                    help="local-contrast radius in cells. Judges each cell against its "
+                         "neighbourhood instead of the whole frame, which is what pulls "
+                         "features out of an evenly-lit face")
+    ap.add_argument("--bg-cut", type=float, default=0.0, dest="bg_cut",
+                    help="cells brighter than this (0-1, global tone) are blanked before local "
+                         "contrast runs. Without it, local contrast turns a flat wall into noise")
+    ap.add_argument("--posterize", type=int, default=0,
+                    help="quantise to N hard bands instead of the smooth ramp; at panel "
+                         "resolution a few flat bands read as a face where a gradient reads as noise")
     args = ap.parse_args()
 
     _, _, px = read_png(args.png)
@@ -123,20 +134,55 @@ def main():
     hi = flat[min(len(flat) - 1, int(len(flat) * hi_p / 100))]
     span = max(1, hi - lo)
 
-    lines = []
-    for r in range(args.rows):                        # box-average each character cell
+    ramp = args.ramp
+    # cell grid first, so local contrast and the glyph mapping both work on cells
+    grid = []
+    for r in range(args.rows):
         ya, yb = r * h // args.rows, max(r * h // args.rows + 1, (r + 1) * h // args.rows)
-        out = []
+        row = []
         for c in range(args.cols):
             xa, xb = c * w // args.cols, max(c * w // args.cols + 1, (c + 1) * w // args.cols)
             tot = n = 0
             for y in range(ya, yb):
-                row = px[y]
+                srow = px[y]
                 for x in range(xa, xb):
-                    tot += row[x]; n += 1
-            v = (tot / n - lo) / span
-            v = min(1.0, max(0.0, v)) ** args.gamma
-            out.append(RAMP[min(len(RAMP) - 1, int(v * len(RAMP)))])
+                    tot += srow[x]; n += 1
+            row.append((tot / n - lo) / span)
+        grid.append(row)
+
+    # Global tone decides what is background; local contrast only shapes what is left.
+    bg = [[args.bg_cut and grid[r][c] > args.bg_cut for c in range(args.cols)]
+          for r in range(args.rows)]
+
+    if args.local:
+        rad = args.local
+        blur = []
+        for r in range(args.rows):
+            brow = []
+            for c in range(args.cols):
+                tot = n = 0
+                for y in range(max(0, r - rad), min(args.rows, r + rad + 1)):
+                    for x in range(max(0, c - rad), min(args.cols, c + rad + 1)):
+                        tot += grid[y][x]; n += 1
+                brow.append(tot / n)
+            blur.append(brow)
+        grid = [[grid[r][c] - blur[r][c] + 0.5 for c in range(args.cols)]
+                for r in range(args.rows)]
+
+    lines = []
+    for r in range(args.rows):                        # box-average each character cell
+        out = []
+        for c in range(args.cols):
+            if bg[r][c]:
+                out.append(" ")
+                continue
+            v = min(1.0, max(0.0, grid[r][c])) ** args.gamma
+            if args.posterize:
+                band = min(args.posterize - 1, int(v * args.posterize))
+                idx = band * (len(ramp) - 1) // max(1, args.posterize - 1)
+                out.append(ramp[idx])
+            else:
+                out.append(ramp[min(len(ramp) - 1, int(v * len(ramp)))])
         lines.append("".join(out).rstrip())
 
     while lines and not lines[0].strip():
