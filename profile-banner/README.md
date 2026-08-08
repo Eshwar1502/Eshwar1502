@@ -13,6 +13,7 @@ apart. **Edit `gen.py` and regenerate — do not hand-edit the SVGs.**
 ```
 profile-banner/
 ├── gen.py               # single source of truth — builds both SVGs
+├── ascii_from_photo.py  # photo -> the ASCII list, stdlib only
 ├── README.md            # this file
 ├── README-snippet.md    # the markdown to paste into your profile README
 └── assets/
@@ -199,6 +200,26 @@ add them back in `INFO` / `socials` once you have real URLs.
 
 Adding or removing an `INFO` row is safe: the rows are centred inside a fixed `282..414` band
 with an adaptive step, so the gap down to `STACK` never changes.
+
+The ASCII portrait was generated from a photo with `ascii_from_photo.py` (stdlib only, same rule
+as `gen.py`). It takes a PNG, so convert first:
+
+```bash
+sips -s format png --resampleHeight 800 --out raw.png photo.jpg
+python3 ascii_from_photo.py raw.png --rot cw --crop 0.42,0.63,0.66,0.90 \
+        --cols 48 --rows 24 --clip 1,60 --preview crop.png
+```
+
+`--crop` is `x0,y0,x1,y1` as fractions and is applied *before* `--rot`; `--preview` writes the
+cropped, rotated greyscale so the framing can be checked without guessing. Two things that decide
+whether the result reads as a face:
+
+- **`--clip` must span the subject, not the frame.** With a blown-out background the wall owns the
+  top of the range and skin and hair both fall in the dense half — one grey blob. Clipping at
+  `1,60` throws the background away and spends the whole ramp on the person.
+- **Column count trades detail against legibility.** The font auto-fits, so more columns means
+  smaller glyphs, and GitHub scales the 1180px banner down to roughly 890px on top of that. 48
+  columns (10.3px, ~7.7px as displayed) is about the limit; 64 turns to mush at display size.
 
 The ASCII portrait is the `ASCII` list — 18 strings. Lines are right-padded to the longest line
 and the font size auto-fits to the panel, so you can swap in any ASCII art without touching
