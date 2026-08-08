@@ -44,15 +44,4 @@
 
 ---
 
-### 📊 GitHub Stats
-
-<p align="center">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=eshwar1502&show_icons=true&locale=en&theme=default" alt="eshwar1502 stats"/>
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs?username=eshwar1502&show_icons=true&locale=en&layout=compact" alt="eshwar1502 top languages"/>
-</p>
-
-<p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=eshwar1502" alt="eshwar1502 streak stats"/>
-</p>
-
 <p align="center"><i>Thanks for stopping by! Feel free to connect on LinkedIn.</i></p>
