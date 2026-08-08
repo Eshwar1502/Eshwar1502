@@ -2,9 +2,9 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="profile-banner/assets/dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="profile-banner/assets/light.svg">
-    <img alt="Eshwar — AI/ML Engineer" src="profile-banner/assets/dark.svg" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="profile-banner/assets/dark-v2.svg">
+    <source media="(prefers-color-scheme: light)" srcset="profile-banner/assets/light-v2.svg">
+    <img alt="Eshwar — AI/ML Engineer" src="profile-banner/assets/dark-v2.svg" width="100%">
   </picture>
 </p>
 

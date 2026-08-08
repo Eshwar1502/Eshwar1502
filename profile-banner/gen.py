@@ -8,6 +8,10 @@ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 W, H = 1180, 610
 NAME = "Eshwar"
 
+# Bump when you want the README to fetch a fresh copy — GitHub caches the old
+# filename hard. Output becomes dark-<VERSION>.svg / light-<VERSION>.svg.
+VERSION = "v2"
+
 MONO = "ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace"
 SANS = "Inter,-apple-system,BlinkMacSystemFont,&apos;Segoe UI&apos;,Roboto,Helvetica,Arial,sans-serif"
 
@@ -89,6 +93,24 @@ ATOP = 128                                          # first baseline
 
 def esc(s):
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def keyed_pairs(pts, total, on="0 0", off="-6000 0"):
+    """pts: [(t, is_on)] -> (values, keyTimes) for a discrete translate track."""
+    out = []
+    for t, flag in pts:
+        t = max(0.0, min(total, t))
+        if out and abs(out[-1][0] - t) < 1e-6:
+            out[-1] = (t, flag)
+        else:
+            out.append((t, flag))
+    if out[0][0] > 0:
+        out.insert(0, (0.0, out[0][1]))
+    if out[-1][0] < total:
+        out.append((total, out[-1][1]))
+    vals = ";".join(on if f else off for _, f in out)
+    kts = ";".join("{:.4f}".format(t / total) for t, _ in out)
+    return vals, kts
 
 
 def keyed(pts, total):
@@ -331,7 +353,7 @@ def build(theme):
         # the whole portrait appearing at once.
         k0 = (0.25 + i * 0.11) / 16
         k1 = (0.25 + i * 0.11 + 0.34) / 16
-        A('<text clip-path="url(#al{i})" opacity="0" x="{x:.1f}" y="{y:.1f}" '
+        A('<text clip-path="url(#al{i})" opacity="1" x="{x:.1f}" y="{y:.1f}" '
           'letter-spacing="0">{t}'
           '<animate attributeName="opacity" values="0;0;1;1;1" '
           'keyTimes="0;{k0:.4f};{k1:.4f};0.93;1" dur="16s" repeatCount="indefinite"/>'
@@ -397,12 +419,22 @@ def build(theme):
         pv, pk = keyed([(0.0, 1.0 if i == 0 else 0.0),
                         (i * 4.0, 1.0),
                         (i * 4.0 + 4.0, 0.0)], total)
-        A('<text clip-path="url(#rc{i})" opacity="0" x="{x}" y="222" font-family="{m}" '
+        # Third, independent guard. The clip can be dropped and the opacity animation
+        # can be dropped; a phrase parked at x -6000 is outside the viewBox and the
+        # outermost <svg> clips that away in every renderer. Worst case one phrase
+        # shows instead of five stacked on top of each other.
+        tv, tk = keyed_pairs([(0.0, i == 0), (i * 4.0, True), (i * 4.0 + 4.0, False)], total)
+        A('<g transform="translate({t0})">'
+          '<animateTransform attributeName="transform" type="translate" values="{tv}" '
+          'keyTimes="{tk}" dur="{d}s" calcMode="discrete" repeatCount="indefinite"/>'.format(
+              t0="0 0" if i == 0 else "-6000 0", tv=tv, tk=tk, d=total))
+        A('<text clip-path="url(#rc{i})" opacity="1" x="{x}" y="222" font-family="{m}" '
           'font-size="20" fill="{t}" letter-spacing="0">{p}'
           '<animate attributeName="opacity" values="{pv}" keyTimes="{pk}" dur="{d}s" '
           'calcMode="discrete" repeatCount="indefinite"/>'
           '</text>'.format(
               i=i, x=rx, m=MONO, t=c["text"], p=esc(ph), pv=pv, pk=pk, d=total))
+        A('</g>')
         pts = typing_points(len(ph), i * 4.0, total)
         xv, xk = keyed([(t, rx + n * 12.0) for t, n in pts], total)
         ov, ok = keyed([(t, 1 if (i * 4.0 - 0.02) <= t <= (i * 4.0 + 4.0) else 0) for t, _ in pts], total)
@@ -514,8 +546,8 @@ def build(theme):
 
 for theme in ("dark", "light"):
     out = build(theme)
-    path = os.path.join(OUT_DIR, "{}.svg".format(theme))
+    path = os.path.join(OUT_DIR, "{}-{}.svg".format(theme, VERSION))
     with open(path, "w", encoding="utf-8") as f:
         f.write(out)
     ET.fromstring(out.encode("utf-8"))  # well-formedness check
-    print(theme, "ok", len(out), "bytes")
+    print(os.path.basename(path), "ok", len(out), "bytes")

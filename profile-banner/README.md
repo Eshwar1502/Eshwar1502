@@ -16,14 +16,14 @@ profile-banner/
 ├── README.md            # this file
 ├── README-snippet.md    # the markdown to paste into your profile README
 └── assets/
-    ├── dark.svg         # generated, ~50 KB
-    └── light.svg        # generated, ~50 KB
+    ├── dark-v2.svg      # generated, ~52 KB
+    └── light-v2.svg     # generated, ~52 KB
 ```
 
 Regenerate:
 
 ```bash
-python3 gen.py     # writes dark.svg + light.svg, validates XML well-formedness
+python3 gen.py     # writes dark-$VERSION.svg + light-$VERSION.svg, validates XML
 ```
 
 No third-party dependencies (stdlib only). Output goes to `assets/` next to the script — change
@@ -36,9 +36,9 @@ No third-party dependencies (stdlib only). Output goes to `assets/` next to the 
 ```html
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="profile-banner/assets/dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="profile-banner/assets/light.svg">
-    <img alt="Eshwar — AI/ML Engineer" src="profile-banner/assets/dark.svg" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="profile-banner/assets/dark-v2.svg">
+    <source media="(prefers-color-scheme: light)" srcset="profile-banner/assets/light-v2.svg">
+    <img alt="Eshwar — AI/ML Engineer" src="profile-banner/assets/dark-v2.svg" width="100%">
   </picture>
 </p>
 ```
@@ -57,13 +57,26 @@ No third-party dependencies (stdlib only). Output goes to `assets/` next to the 
 | Every `id` must stay unique within a file | Clip paths and gradients are referenced by id |
 | Keep `viewBox="0 0 1180 610"` + `width="100%"` | This is what makes it responsive in a README |
 
+**Filenames carry a `VERSION` suffix** (`VERSION = "v2"` in `gen.py`). GitHub caches an image
+URL hard enough that a fixed SVG can keep rendering the broken old bytes for a long time. Bump
+`VERSION`, regenerate, update the two paths in the root `README.md`, and delete the old pair.
+
 **Never let `clip-path` be the only thing separating two overlapping elements.** WebKit renders
 README SVGs as images and drops `clip-path` on `<text>` in that mode while still running the SMIL
 opacity animations — so anything relying on a clip to stay hidden gets painted. The five role
 phrases share one baseline, and on Safari that showed up as all five stacked into an unreadable
-blur. Each phrase now also carries a discrete `opacity` window, and each ASCII line an opacity
-reveal, so the clip only adds the character-level typing on renderers that honour it. If you add
-another overlapping element, give it an opacity gate too.
+blur. The five role phrases share one baseline, so they now carry three independent guards, and the
+element renders correctly if *any one* of them survives:
+
+1. the clip — character-by-character typing,
+2. a discrete `opacity` window per phrase,
+3. a discrete `translate` that parks inactive phrases at `x -6000`, outside the viewBox, which
+   the outermost `<svg>` clips away in every renderer.
+
+**Base attribute values must be the safe state, not the hidden state.** These texts are written
+`opacity="1"`; with `opacity="0"` a renderer that ignores the animation shows nothing at all.
+Worst case now is a single static phrase — never five stacked into a blur. If you add another
+element that overlaps a sibling, give it the same treatment.
 
 Two known limitations that are **not** bugs:
 
