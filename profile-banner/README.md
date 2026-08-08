@@ -57,6 +57,14 @@ No third-party dependencies (stdlib only). Output goes to `assets/` next to the 
 | Every `id` must stay unique within a file | Clip paths and gradients are referenced by id |
 | Keep `viewBox="0 0 1180 610"` + `width="100%"` | This is what makes it responsive in a README |
 
+**Never let `clip-path` be the only thing separating two overlapping elements.** WebKit renders
+README SVGs as images and drops `clip-path` on `<text>` in that mode while still running the SMIL
+opacity animations — so anything relying on a clip to stay hidden gets painted. The five role
+phrases share one baseline, and on Safari that showed up as all five stacked into an unreadable
+blur. Each phrase now also carries a discrete `opacity` window, and each ASCII line an opacity
+reveal, so the clip only adds the character-level typing on renderers that honour it. If you add
+another overlapping element, give it an opacity gate too.
+
 Two known limitations that are **not** bugs:
 
 - **Hover does nothing on GitHub.** The `.pill:hover` / `.soc:hover` rules in the `<style>` block
@@ -136,10 +144,10 @@ half the opacity of dark mode to look equally subtle.
 
 | Effect | Implementation | Loop |
 | --- | --- | --- |
-| ASCII line-by-line typing | one `clipPath` per line, animated `width`, staggered `keyTimes` | 16s |
+| ASCII line-by-line typing | one `clipPath` per line + per-line `opacity` fallback | 16s |
 | ASCII gradient shift | animated `stop-color` on three stops + `gradientTransform` translate | 12s / 7s |
 | ASCII float | `animateTransform` translate with `keySplines` easing | 7s |
-| Role typing | `calcMode="discrete"` width animation, one step per character | 20s (5 × 4s) |
+| Role typing | discrete clip `width` per character + per-phrase `opacity` window | 20s (5 × 4s) |
 | Typing cursor | discrete `x` animation on the same keyTimes + 1s blink | 20s / 1s |
 | Sequential reveal | `opacity` + translate with `fill="freeze"`, staggered `begin` | once |
 | Background blobs | three `radialGradient` ellipses on translate loops | 18/22/26s |

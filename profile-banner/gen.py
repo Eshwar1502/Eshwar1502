@@ -325,9 +325,18 @@ def build(theme):
     A('<g font-family="{}" font-size="{:.2f}" fill="url(#asc)" xml:space="preserve" '
       'filter="url(#glowS)">'.format(MONO, AFS))
     for i, line in enumerate(ASCII):
-        A('<text clip-path="url(#al{i})" x="{x:.1f}" y="{y:.1f}" '
-          'letter-spacing="0">{t}</text>'.format(
-              i=i, x=AX, y=ATOP + i * ALH, t=esc(line.ljust(MAXLEN))))
+        # The clip does the character-level typing; the opacity animation repeats the
+        # same schedule at line level. Renderers that ignore clip-path on <text>
+        # (WebKit, SVG-as-image) still get a correct line-by-line reveal instead of
+        # the whole portrait appearing at once.
+        k0 = (0.25 + i * 0.11) / 16
+        k1 = (0.25 + i * 0.11 + 0.34) / 16
+        A('<text clip-path="url(#al{i})" opacity="0" x="{x:.1f}" y="{y:.1f}" '
+          'letter-spacing="0">{t}'
+          '<animate attributeName="opacity" values="0;0;1;1;1" '
+          'keyTimes="0;{k0:.4f};{k1:.4f};0.93;1" dur="16s" repeatCount="indefinite"/>'
+          '</text>'.format(
+              i=i, x=AX, y=ATOP + i * ALH, t=esc(line.ljust(MAXLEN)), k0=k0, k1=k1))
     A('</g></g>')
 
     # ascii scanline
@@ -382,9 +391,18 @@ def build(theme):
     A('<text x="{x}" y="222" font-family="{m}" font-size="20" fill="{a}">&gt;</text>'.format(
         x=CX, m=MONO, a=c["a3"]))
     for i, ph in enumerate(ROLES):
-        A('<text clip-path="url(#rc{i})" x="{x}" y="222" font-family="{m}" font-size="20" '
-          'fill="{t}" letter-spacing="0">{p}</text>'.format(
-              i=i, x=rx, m=MONO, t=c["text"], p=esc(ph)))
+        # Without this the phrases only stay separated by their clips — and a renderer
+        # that drops clip-path paints all five on top of each other. The opacity window
+        # keeps exactly one phrase on screen no matter what happens to the clipping.
+        pv, pk = keyed([(0.0, 1.0 if i == 0 else 0.0),
+                        (i * 4.0, 1.0),
+                        (i * 4.0 + 4.0, 0.0)], total)
+        A('<text clip-path="url(#rc{i})" opacity="0" x="{x}" y="222" font-family="{m}" '
+          'font-size="20" fill="{t}" letter-spacing="0">{p}'
+          '<animate attributeName="opacity" values="{pv}" keyTimes="{pk}" dur="{d}s" '
+          'calcMode="discrete" repeatCount="indefinite"/>'
+          '</text>'.format(
+              i=i, x=rx, m=MONO, t=c["text"], p=esc(ph), pv=pv, pk=pk, d=total))
         pts = typing_points(len(ph), i * 4.0, total)
         xv, xk = keyed([(t, rx + n * 12.0) for t, n in pts], total)
         ov, ok = keyed([(t, 1 if (i * 4.0 - 0.02) <= t <= (i * 4.0 + 4.0) else 0) for t, _ in pts], total)
