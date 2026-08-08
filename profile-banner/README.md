@@ -61,6 +61,10 @@ No third-party dependencies (stdlib only). Output goes to `assets/` next to the 
 URL hard enough that a fixed SVG can keep rendering the broken old bytes for a long time. Bump
 `VERSION`, regenerate, update the two paths in the root `README.md`, and delete the old pair.
 
+**Clip widths need a pad past the last glyph.** A clip sized to exactly `n × 12px` puts the final
+character on the boundary and hinting shaves its right edge (`Builde|r`). The pad is kept narrower
+than the cursor block drawn at the same position, so it never uncovers the next character.
+
 **Never let `clip-path` be the only thing separating two overlapping elements.** WebKit renders
 README SVGs as images and drops `clip-path` on `<text>` in that mode while still running the SMIL
 opacity animations — so anything relying on a clip to stay hidden gets painted. The five role
@@ -160,7 +164,7 @@ half the opacity of dark mode to look equally subtle.
 | ASCII line-by-line typing | one `clipPath` per line + per-line `opacity` fallback | 16s |
 | ASCII gradient shift | animated `stop-color` on three stops + `gradientTransform` translate | 12s / 7s |
 | ASCII float | `animateTransform` translate with `keySplines` easing | 7s |
-| Role typing | discrete clip `width` per character + per-phrase `opacity` window | 20s (5 × 4s) |
+| Role typing | discrete clip `width` per character (`n×12 + 9` pad) + per-phrase `opacity` window | 20s (5 × 4s) |
 | Typing cursor | discrete `x` animation on the same keyTimes + 1s blink | 20s / 1s |
 | Sequential reveal | `opacity` + translate with `fill="freeze"`, staggered `begin` | once |
 | Background blobs | three `radialGradient` ellipses on translate loops | 18/22/26s |

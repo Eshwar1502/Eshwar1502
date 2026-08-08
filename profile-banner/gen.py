@@ -259,7 +259,11 @@ def build(theme):
     rx = CX + 26
     for i, ph in enumerate(ROLES):
         pts = typing_points(len(ph), i * 4.0, total)
-        wv, wk = keyed([(t, n * 12.0) for t, n in pts], total)
+        # Pad the clip past the last glyph. At exactly n*12 the final character sits on
+        # the clip boundary and hinting shaves its right edge off ("Builde|r"). The pad
+        # is narrower than the cursor block that sits at the same spot, so it never
+        # reveals a sliver of the next character.
+        wv, wk = keyed([(t, n * 12.0 + 9.0 if n else 0.0) for t, n in pts], total)
         A('<clipPath id="rc{i}"><rect x="{x}" y="196" width="0" height="34">'
           '<animate attributeName="width" values="{v}" keyTimes="{k}" dur="{d}s" '
           'calcMode="discrete" repeatCount="indefinite"/></rect></clipPath>'.format(
