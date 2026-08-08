@@ -190,24 +190,24 @@
 </g>
 <line x1="478" y1="252" x2="1118" y2="252" stroke="rgba(15,23,42,.08)" stroke-width="1" opacity="0"><animate attributeName="opacity" values="0;1" dur=".6s" begin="1.5s" fill="freeze"/></line>
 <g opacity="0"><animate attributeName="opacity" values="0;1" dur=".55s" begin="1.80s" fill="freeze"/><animateTransform attributeName="transform" type="translate" values="-14 0;0 0" dur=".55s" begin="1.80s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".2 .8 .2 1"/>
-<g transform="translate(487,277)" fill="none" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M0 6.5C0 6.5 -5.2 0.6 -5.2 -2.6a5.2 5.2 0 1 1 10.4 0C5.2 0.6 0 6.5 0 6.5Z"/><circle cx="0" cy="-2.6" r="1.9"/></g>
-<text x="508" y="282" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="1.6">LOCATION</text>
-<text x="626" y="282" font-size="15.5" fill="#0F172A">India</text>
+<g transform="translate(487,286.0)" fill="none" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M0 6.5C0 6.5 -5.2 0.6 -5.2 -2.6a5.2 5.2 0 1 1 10.4 0C5.2 0.6 0 6.5 0 6.5Z"/><circle cx="0" cy="-2.6" r="1.9"/></g>
+<text x="508" y="291.0" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="1.6">LOCATION</text>
+<text x="626" y="291.0" font-size="15.5" fill="#0F172A">India</text>
 </g>
 <g opacity="0"><animate attributeName="opacity" values="0;1" dur=".55s" begin="1.98s" fill="freeze"/><animateTransform attributeName="transform" type="translate" values="-14 0;0 0" dur=".55s" begin="1.98s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".2 .8 .2 1"/>
-<g transform="translate(487,310)" fill="none" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M-7 -2.2 0 -5.6 7 -2.2 0 1.2Z"/><path d="M-4 -0.7v3.6c0 1.5 8 1.5 8 0V-0.7"/></g>
-<text x="508" y="315" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="1.6">EDUCATION</text>
-<text x="626" y="315" font-size="15.5" fill="#0F172A">B.Tech · Computer Science</text>
+<g transform="translate(487,324.0)" fill="none" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M-7 -2.2 0 -5.6 7 -2.2 0 1.2Z"/><path d="M-4 -0.7v3.6c0 1.5 8 1.5 8 0V-0.7"/></g>
+<text x="508" y="329.0" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="1.6">EDUCATION</text>
+<text x="626" y="329.0" font-size="15.5" fill="#0F172A">B.Tech · Computer Science</text>
 </g>
 <g opacity="0"><animate attributeName="opacity" values="0;1" dur=".55s" begin="2.16s" fill="freeze"/><animateTransform attributeName="transform" type="translate" values="-14 0;0 0" dur=".55s" begin="2.16s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".2 .8 .2 1"/>
-<g transform="translate(487,343)" fill="none" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="0" r="6"/><circle cx="0" cy="0" r="2.3"/></g>
-<text x="508" y="348" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="1.6">FOCUS</text>
-<text x="626" y="348" font-size="15.5" fill="#0F172A">Multimodal AI · Vision + Language</text>
+<g transform="translate(487,362.0)" fill="none" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="0" r="6"/><circle cx="0" cy="0" r="2.3"/></g>
+<text x="508" y="367.0" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="1.6">FOCUS</text>
+<text x="626" y="367.0" font-size="15.5" fill="#0F172A">Multimodal AI · Vision + Language</text>
 </g>
 <g opacity="0"><animate attributeName="opacity" values="0;1" dur=".55s" begin="2.34s" fill="freeze"/><animateTransform attributeName="transform" type="translate" values="-14 0;0 0" dur=".55s" begin="2.34s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".2 .8 .2 1"/>
-<g transform="translate(487,376)" fill="none" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="0" r="6"/><path d="M-6 0h12"/><path d="M0 -6c3 3.2 3 8.8 0 12c-3 -3.2 -3 -8.8 0 -12Z"/></g>
-<text x="508" y="381" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="1.6">GITHUB</text>
-<text x="626" y="381" font-size="15.5" fill="#0F172A">github.com/Eshwar1502</text>
+<g transform="translate(487,400.0)" fill="none" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="0" r="6"/><path d="M-6 0h12"/><path d="M0 -6c3 3.2 3 8.8 0 12c-3 -3.2 -3 -8.8 0 -12Z"/></g>
+<text x="508" y="405.0" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="1.6">GITHUB</text>
+<text x="626" y="405.0" font-size="15.5" fill="#0F172A">github.com/Eshwar1502</text>
 </g>
 <text x="478" y="450" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,&apos;DejaVu Sans Mono&apos;,monospace" font-size="12" fill="#94A3B8" letter-spacing="2.6" opacity="0">STACK<animate attributeName="opacity" values="0;1" dur=".5s" begin="2.9s" fill="freeze"/></text>
 <g class="pill" opacity="0"><animate attributeName="opacity" values="0;1" dur=".45s" begin="3.05s" fill="freeze"/><rect x="478.0" y="460" width="70.0" height="28" rx="14" fill="#FFFFFF" fill-opacity="0.92" stroke="#2563EB" stroke-opacity=".45" stroke-width="1"><animate attributeName="stroke-opacity" values=".25;.75;.25" dur="3.4s" begin="0.00s" repeatCount="indefinite"/></rect><text x="513.0" y="478.5" font-size="12.5" fill="#0F172A" text-anchor="middle" letter-spacing=".2">Python</text></g>

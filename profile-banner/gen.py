@@ -402,18 +402,22 @@ def build(theme):
       '<animate attributeName="opacity" values="0;1" dur=".6s" begin="1.5s" fill="freeze"/>'
       '</line>'.format(x=CX, x2=CX + CW, b=c["border"]))
 
-    # info rows
+    # info rows — the block always occupies the 282..414 band so the gap down to
+    # STACK stays constant no matter how many rows INFO has.
+    nrow = len(INFO)
+    rstep = min(38.0, 132.0 / (nrow - 1)) if nrow > 1 else 0.0
+    rtop = 282 + (132.0 - rstep * (nrow - 1)) / 2
     for i, (icon, label, val) in enumerate(INFO):
-        y = 282 + i * 33
+        y = rtop + i * rstep
         A('<g opacity="0">{r}'.format(r=reveal(1.8 + i * 0.18)))
         A('<g transform="translate({ix},{iy})" fill="none" stroke="{a}" stroke-width="1.5" '
           'stroke-linecap="round" stroke-linejoin="round">{p}</g>'.format(
-              ix=CX + 9, iy=y - 5, a=c["a2"], p=ICONS[icon]))
+              ix=CX + 9, iy=round(y - 5, 1), a=c["a2"], p=ICONS[icon]))
         A('<text x="{x}" y="{y}" font-family="{m}" font-size="12" fill="{d}" '
-          'letter-spacing="1.6">{l}</text>'.format(x=CX + 30, y=y, m=MONO, d=c["dim"],
+          'letter-spacing="1.6">{l}</text>'.format(x=CX + 30, y=round(y, 1), m=MONO, d=c["dim"],
                                                    l=label.upper()))
         A('<text x="{x}" y="{y}" font-size="15.5" fill="{t}">{v}</text>'.format(
-            x=CX + 148, y=y, t=c["text"], v=esc(val)))
+            x=CX + 148, y=round(y, 1), t=c["text"], v=esc(val)))
         A('</g>')
 
     # skills

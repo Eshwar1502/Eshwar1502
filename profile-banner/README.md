@@ -105,7 +105,7 @@ Key coordinates, all defined as constants near the top of `gen.py`:
 | ASCII font size / char width | auto-fit from `MAXLEN`, currently `15.5px` / `9.3px` |
 | ASCII first baseline | `ATOP = 128`, line height `AFS × 1.26` |
 | Name baseline | `y 172` · role line `y 222` · divider `y 252` |
-| Info rows | `y 282 + i × 33` (4 rows) |
+| Info rows | block centred in the `282..414` band; step = `min(38, 132/(n-1))` |
 | STACK label | `y 450` · pill rows top `460` and `496`, height `28` |
 | Social icons | `cy 556`, `r 16`, starting `cx 498`, step `48` (2 icons) |
 
@@ -170,6 +170,9 @@ Live values: GitHub and LinkedIn URLs are real. `India` and `B.Tech · Computer 
 still generic — swap them if you want something more specific. The Portfolio and Email info
 rows plus the X / portfolio social icons were removed because their values were placeholders;
 add them back in `INFO` / `socials` once you have real URLs.
+
+Adding or removing an `INFO` row is safe: the rows are centred inside a fixed `282..414` band
+with an adaptive step, so the gap down to `STACK` never changes.
 
 The ASCII portrait is the `ASCII` list — 18 strings. Lines are right-padded to the longest line
 and the font size auto-fits to the panel, so you can swap in any ASCII art without touching
